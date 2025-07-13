@@ -4,14 +4,15 @@ FROM node:18-slim as builder
 # 設定工作目錄
 WORKDIR /app
 
-# 確保 package.json 存在
-COPY package.json package-lock.json* ./
-
-# 安裝依賴
-RUN npm install
-
-# 複製源代碼（排除不需要的檔案）
+# 先複製整個專案
 COPY . .
+
+# 確認 package.json 存在並安裝依賴
+RUN ls -la && \
+    if [ ! -f package.json ]; then echo "package.json not found!" && exit 1; fi && \
+    npm install
+
+# 構建專案
 RUN npm run build || (echo "Build failed" && exit 1)
 
 # 使用輕量級 nginx

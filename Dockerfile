@@ -13,20 +13,25 @@ RUN npm ci
 # 複製源代碼
 COPY . .
 
-# 構建應用
+# 設定環境變數並構建應用
+ENV NODE_ENV=production
 RUN npm run build
 
-# 使用 nginx 作為生產環境的基礎映像
-FROM nginx:alpine
+# 使用輕量級 nginx
+FROM nginx:stable-alpine
+
+# 創建非 root 用戶
+RUN adduser -D static
+USER static
 
 # 複製構建產物到 nginx 目錄
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder --chown=static:static /app/dist /usr/share/nginx/html/
 
-# 複製 nginx 配置
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# 複製自定義 nginx 配置
+COPY --chown=static:static nginx.conf /etc/nginx/conf.d/default.conf
 
-# 暴露端口
-EXPOSE 8080
+# 設定環境變數
+ENV PORT=8080
 
-# 啟動 nginx
-CMD ["nginx", "-g", "daemon off;"]
+# 使用 env 替換 nginx 配置中的環境變數並啟動 nginx
+CMD sed -i "s/\$PORT/$PORT/g" /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'

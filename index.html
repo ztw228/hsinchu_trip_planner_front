@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="utf-8" />
+  <title>新竹旅遊規劃</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ====== 內嵌簡易樣式，後續可拆出 assets/css/style.css ====== -->
+  <style>
+    :root {
+      --purple: #a64def;
+      --blue: #6f9dff;
+      --light-blue: #d5e0fa;
+      --light-purple: #f1e1ff;
+      --orange: #ff8636;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", sans-serif;
+      background: var(--light-blue);
+    }
+
+    /* ===== 頁首 ===== */
+    .top-title {
+      background: var(--blue);
+      color: #fff;
+      padding: 12px 24px;
+      font-size: 2.2rem;
+      font-weight: 700;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 13px;
+      text-align: center;
+    }
+
+    /* ===== 主要卡片 ===== */
+    .card {
+      max-width: 1000px;
+      margin: 24px auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
+    }
+
+    .card h2 {
+      text-align: center;
+      color: var(--purple);
+      margin-top: 0;
+      margin-bottom: 24px;
+    }
+
+    .section {
+      margin-bottom: 32px;
+      padding: 16px;
+      background: var(--light-purple);
+      border-radius: 10px;
+    }
+
+    .section > h3 {
+      margin: 0 0 12px;
+      color: var(--purple);
+      font-size: 1.4rem;
+    }
+
+    /* ===== checkbox grid ===== */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 10px;
+    }
+
+    label.checkbox {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 8px;
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 0.95rem;
+    }
+
+    label.checkbox:hover {
+      background: #e0f7ff;
+    }
+
+    input[type="checkbox"] {
+      accent-color: var(--purple);
+      cursor: pointer;
+    }
+
+    /* ===== range 室內外 ===== */
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 1rem;
+    }
+
+    .range-row span {
+      width: 60px;
+      text-align: center;
+    }
+
+    /* ===== flex 行排列 ===== */
+    .flex-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .flex-row > div {
+      flex: 1 1 200px;
+    }
+
+    /* ===== 數字輸入 + +/- 按鈕 ===== */
+    .num-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .num-box input {
+      width: 80px;
+      height: 32px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .btn-small {
+      width: 32px;
+      height: 32px;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    /* ===== 建立行程按鈕 ===== */
+    .btn-create {
+      display: block;
+      width: 200px;
+      margin: 0 auto;
+      padding: 12px 0;
+      background: var(--orange);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .btn-create:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+
+  <!-- 前端邏輯 -->
+  <script src="assets/js/form.js" defer></script>
+</head>
+
+<body>
+
+  <header class="top-title" >新竹旅遊規劃</header>
+
+  <main class="card">
+    <h2>建立專屬旅遊行程</h2>
+
+    <!-- ===== FORM ===== -->
+    <form id="tripForm">
+      <!-- 地區選擇 -->
+      <div class="section">
+        <h3>旅遊地點</h3>
+
+        <h4>新竹市</h4>
+        <div class="checkbox-grid">
+          <label class="checkbox"><input type="checkbox" name="area" value="東區" /> 東區</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="北區" /> 北區</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="香山區" /> 香山區</label>
+        </div>
+
+        <h4 style="margin-top:16px;">新竹縣</h4>
+        <div class="checkbox-grid">
+          <label class="checkbox"><input type="checkbox" name="area" value="竹北市" /> 竹北市</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="竹東鎮" /> 竹東鎮</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="新埔鎮" /> 新埔鎮</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="關西鎮" /> 關西鎮</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="新豐鄉" /> 新豐鄉</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="峨眉鄉" /> 峨眉鄉</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="寶山鄉" /> 寶山鄉</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="五峰鄉" /> 五峰鄉</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="橫山鄉" /> 橫山鄉</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="北埔鄉" /> 北埔鄉</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="尖石鄉" /> 尖石鄉</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="芎林鄉" /> 芎林鄉</label>
+          <label class="checkbox"><input type="checkbox" name="area" value="湖口鄉" /> 湖口鄉</label>
+        </div>
+      </div>
+
+      <!-- 旅遊偏好 -->
+      <div class="section">
+        <h3>旅遊偏好</h3>
+
+        <!-- 室內外 slider -->
+        <div class="range-row" style="margin-bottom:18px;">
+          <span>全室外</span>
+          <input type="range" id="mySlider" min="0" max="100" step="50" value="0" />
+          <span>全室內</span>
+        </div>
+
+        <!-- 類型複選 -->
+        <h4 style="margin:6px 0;">旅遊類型</h4>
+        <div class="checkbox-grid">
+          <label class="checkbox"><input type="checkbox" name="like" value="food" /> 美食</label>
+          <label class="checkbox"><input type="checkbox" name="like" value="play" /> 遊玩</label>
+          <label class="checkbox"><input type="checkbox" name="like" value="photo" /> 拍照</label>
+        </div>
+      </div>
+
+      <!-- 日期 -->
+      <div class="section">
+        <h3>旅遊日期</h3>
+        <div class="flex-row">
+          <div>
+            <label>開始日期<br />
+              <input type="date" id="startDate" required />
+            </label>
+          </div>
+          <div>
+            <label>結束日期<br />
+              <input type="date" id="endDate" required />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 預算 / 人數 -->
+      <div class="section">
+        <h3>旅遊預算</h3>
+
+        <div class="flex-row">
+          <!-- 人數 -->
+          <div>
+            <label>旅遊人數</label><br />
+            <div class="num-box">
+              <button type="button" class="btn-small" onclick="changePeople(-1)">−</button>
+              <input type="number" id="people_cnt" value="2" min="1" readonly />
+              <button type="button" class="btn-small" onclick="changePeople(1)">＋</button>
+            </div>
+          </div>
+
+          <!-- 飯店預算 -->
+          <div>
+            <label>飯店總預算 (NT$)<br />
+              <input type="number" name="hotel_budget" id="hotel_budget" min="0" placeholder="例如 4000" required />
+            </label>
+          </div>
+
+          <!-- 遊玩預算 -->
+          <div>
+            <label>遊玩總預算 (NT$)<br />
+              <input type="number" name="play_budget" id="play_budget" min="0" placeholder="例如 3000" required />
+            </label>
+          </div>
+
+          <!-- 景點數量 -->
+          <div>
+            <label>希望景點數<br />
+              <input type="number" name="spot_cnt" id="spot_cnt" min="1" max="10" value="5" required />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 提交 -->
+      <button type="submit" class="btn-create">建立行程</button>
+    </form>
+  </main>
+
+  <!-- === 小腳本：日期互鎖、人數增減 === -->
+  <script>
+    // 互鎖日期
+    const startInput = document.getElementById('startDate');
+    const endInput = document.getElementById('endDate');
+    startInput.addEventListener('change', () => (endInput.min = startInput.value));
+    endInput.addEventListener('change', () => (startInput.max = endInput.value));
+
+    // 人數 +/- 控制
+    function changePeople(delta) {
+      const input = document.getElementById('people_cnt');
+      let val = parseInt(input.value, 10) + delta;
+      if (val < 1) val = 1;
+      input.value = val;
+    }
+  </script>
+</body>
+
+</html>

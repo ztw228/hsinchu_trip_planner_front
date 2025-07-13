@@ -1,16 +1,10 @@
-###############################################################################
-#  Static Frontend for Cloud Run (Nginx)                                      #
-###############################################################################
-
 FROM nginx:stable-alpine
 
-# 1. 把靜態檔整包複製進去
+# 靜態檔
 COPY . /usr/share/nginx/html
 
+# 覆蓋 Nginx 設定：讓它聽 8080
+COPY default.conf /etc/nginx/conf.d/default.conf
 
-
-# 2. Cloud Run 會把 $PORT 傳進容器，Nginx 要聽 8080
-#    default.conf 已用  $PORT  變數？→ 用 envsubst 先替換
-ENV PORT 8080
+EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
-

@@ -1,35 +1,16 @@
-# 使用 Node.js 18 作為基礎映像進行構建
-FROM node:18-slim as builder
+###############################################################################
+#  Static Frontend for Cloud Run (Nginx)                                      #
+###############################################################################
 
-# 設定工作目錄
-WORKDIR /app
-
-# 先複製整個專案
-COPY . .
-
-# 確認 package.json 存在並安裝依賴
-RUN ls -la && \
-    if [ ! -f package.json ]; then echo "package.json not found!" && exit 1; fi && \
-    npm install
-
-# 構建專案
-RUN npm run build || (echo "Build failed" && exit 1)
-
-# 使用輕量級 nginx
 FROM nginx:stable-alpine
 
-# 創建非 root 用戶
-RUN adduser -D static
-USER static
+# 1. 把靜態檔整包複製進去
+COPY . /usr/share/nginx/html
 
-# 複製構建產物到 nginx 目錄
-COPY --from=builder --chown=static:static /app/dist /usr/share/nginx/html/
 
-# 複製自定義 nginx 配置
-COPY --chown=static:static nginx.conf /etc/nginx/conf.d/default.conf
 
-# 設定環境變數
-ENV PORT=8080
+# 2. Cloud Run 會把 $PORT 傳進容器，Nginx 要聽 8080
+#    default.conf 已用  $PORT  變數？→ 用 envsubst 先替換
+ENV PORT 8080
+CMD ["nginx", "-g", "daemon off;"]
 
-# 使用 env 替換 nginx 配置中的環境變數並啟動 nginx
-CMD sed -i "s/\$PORT/$PORT/g" /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'

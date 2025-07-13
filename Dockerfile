@@ -4,18 +4,15 @@ FROM node:18-slim as builder
 # 設定工作目錄
 WORKDIR /app
 
-# 複製 package.json 和 package-lock.json
-COPY package*.json ./
+# 確保 package.json 存在
+COPY package.json package-lock.json* ./
 
 # 安裝依賴
-RUN npm ci
+RUN npm install
 
-# 複製源代碼
+# 複製源代碼（排除不需要的檔案）
 COPY . .
-
-# 設定環境變數並構建應用
-ENV NODE_ENV=production
-RUN npm run build
+RUN npm run build || (echo "Build failed" && exit 1)
 
 # 使用輕量級 nginx
 FROM nginx:stable-alpine

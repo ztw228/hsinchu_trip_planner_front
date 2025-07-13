@@ -26,7 +26,7 @@ document.getElementById("tripForm").addEventListener("submit", async (e) => {
     ),
   };
 
-  const res = await fetch("http://127.0.0.1:8000/api/plan", {
+  const res = await fetch("https://hsinchu-trip-planner-backend-320837244860.asia-east1.run.app", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
